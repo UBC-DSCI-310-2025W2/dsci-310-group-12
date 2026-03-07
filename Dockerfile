@@ -12,7 +12,7 @@ RUN conda install -c conda-forge conda-lock -y && \
     conda-lock install -n dsci310 conda-linux-64.lock
 
 # Activate the environment
-ENV PATH /opt/conda/envs/dsci310/bin:$PATH
+ENV PATH=/opt/conda/envs/dsci310/bin:$PATH
 
 # Copy project files
 COPY . .
