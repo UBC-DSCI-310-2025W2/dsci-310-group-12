@@ -8,8 +8,8 @@ WORKDIR /home/jovyan
 COPY conda-linux-64.lock .
 
 # Create environment from lock file
-RUN mamba create -y -n dsci310 --file conda-linux-64.lock && \
-    conda clean -afy
+RUN conda install -c conda-forge conda-lock -y && \
+    conda-lock install -n dsci310 conda-linux-64.lock
 
 # Activate the environment
 ENV PATH /opt/conda/envs/dsci310/bin:$PATH
