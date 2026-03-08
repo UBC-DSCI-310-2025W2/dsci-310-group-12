@@ -7,9 +7,9 @@
 - Taehyun Kim
 
 ## Project Summary
-This project analyzes factors that influence whether an individual earns more than $50,000 per year. Using a publicly available income dataset, we apply a logistic regression classification model to predict whether an individual's income falls above or below the $50K threshold.
+In this project, we applied a logistic regression model to the 1994 UCI Adult Census dataset to predict whether an individual earns ≤$50K or >$50K per year. The model achieved an accuracy of approximately 80.13%. Our exploratory data analysis showed that education level appears to be positively related to income, meaning individuals with higher levels of education tend to earn more. We also found a relationship between marital status and income, where married individuals were more likely to earn more than $50K compared to non-married individuals. 
 
-The analysis explores relationships between income and variables such as education level and marital status, and evaluates the performance of the predictive model using metrics including accuracy, a confusion matrix, and a Receiver Operating Characteristic (ROC) curve. The results help illustrate how statistical modeling can be used to understand income patterns and evaluate predictive performance.
+These findings may help inform education and social policy discussions. Additionally, because the model performed well, this approach could be used as a starting point for similar analyses in economic research.
 
 ## How to run the analysis
 
