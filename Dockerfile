@@ -5,11 +5,11 @@ FROM condaforge/miniforge3:25.9.1-0
 WORKDIR /home/jovyan
 
 # Copy environment lock file
-COPY conda-linux-64.lock .
+COPY conda-lock.yml .
 
 # Create environment from lock file
 RUN conda install -c conda-forge conda-lock -y && \
-    conda-lock install -n dsci310 conda-linux-64.lock
+    conda-lock install -n dsci310 conda-lock.yml
 
 # Activate the environment
 ENV PATH=/opt/conda/envs/dsci310/bin:$PATH

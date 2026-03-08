@@ -11,7 +11,7 @@ on:
     paths:
       - 'Dockerfile'
       - .github/workflows/docker-publish.yml # or whatever you named the file
-      - 'conda-linux-64.lock'
+      - 'conda-lock.yml'
 
 jobs:
   push_to_registry:
