@@ -17,10 +17,10 @@ The analysis explores relationships between income and variables such as educati
 
 Using conda-lock file for complete reproducibility, 
 
-conda-lock install --name dsci310 conda-lock.yml
+`conda-lock install --name dsci310 conda-lock.yml`
 
 After, open and run the Jupyter notebook:
-salary_analysis.ipynb
+`salary_analysis.ipynb`
 
 ### Option 2: Using Docker
 
@@ -28,15 +28,38 @@ salary_analysis.ipynb
 
 Make sure Docker is installed and running. From the root directory of the repository (where the Dockerfile is located), run:
 
-docker build -t dsci-310-group-12 .
+`docker build -t dsci-310-group-12 .`
 
-How to Run the Docker Image:
+#### How to Run the Docker Image:
 
-docker run --rm -p 8888:8888 dsci-310-group-12
+`docker run --rm -p 8888:8888 dsci-310-group-12`
 
 After the container starts, open a browser and navigate to:
 
 http://localhost:8888
 
-Then open and run: salary_analysis.ipynb
+Then open and run: `salary_analysis.ipynb`
 
+## Dependencies
+
+The main dependencies required to run this project are listed in `environment.yml` and include:
+
+- python=3.12
+  - jupyterlab
+  - numpy
+  - pandas
+  - matplotlib
+  - seaborn
+  - scikit-learn
+  - statsmodels
+  - pip
+  - pip:
+      - openpyxl
+
+Additional environment details are locked in `conda-lock.yml` to ensure reproducibility across platforms.
+
+## License
+
+This project is distributed under the following license:
+
+- MIT License (see `LICENSE.md` for full details)
