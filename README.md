@@ -44,7 +44,7 @@ Then open and run: `salary_analysis.ipynb`
 
 The main dependencies required to run this project are listed in `environment.yml` and include:
 
-- python=3.12
+  - python=3.12
   - jupyterlab
   - numpy
   - pandas
@@ -52,6 +52,14 @@ The main dependencies required to run this project are listed in `environment.ym
   - seaborn
   - scikit-learn
   - statsmodels
+  - r-base            
+  - r-irkernel
+  - r-caret
+  - r-dplyr
+  - r-patchwork
+  - r-tidyr
+  - r-proc
+  - r-ggplot2
   - pip
   - pip:
       - openpyxl
