@@ -10,6 +10,17 @@ dependencies:
   - seaborn
   - scikit-learn
   - statsmodels
+  - r-base            
+  - r-irkernel
+  - r-dplyr
+  - r-patchwork
+  - r-tidyr
+  - r-proc
+  - r-ggplot2
   - pip
   - pip:
       - openpyxl
+
+
+
+
