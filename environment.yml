@@ -12,6 +12,7 @@ dependencies:
   - statsmodels
   - r-base            
   - r-irkernel
+  - r-caret
   - r-dplyr
   - r-patchwork
   - r-tidyr
