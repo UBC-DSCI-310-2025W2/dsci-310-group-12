@@ -1,0 +1,7 @@
+services:
+  analysis-env: # name of the service we are creating
+    image: tkim1210/group-12_docker:latest
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/home/jovyan
