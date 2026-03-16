@@ -15,54 +15,91 @@ These findings may help inform education and social policy discussions. Addition
 
 ### Option 1: Using Conda 
 
-Using conda-lock file for complete reproducibility, 
+Using conda-lock file for complete reproducibility. Requires Conda and Conda-lock
 
-`conda-lock install --name dsci310 conda-lock.yml`
+You can install the Environment using conda-lock file, activate and run jupyter notebooks using:
 
-After, open and run the Jupyter notebook:
-`salary_analysis.ipynb`
+```bash
+conda-lock install --name dsci310 conda-lock.yml
+conda activate dsci310
+jupyter lab
+```
+ Jupyter notebooks should be open, if not open the URL printed in the terminal starting in https://127.0...
 
-### Option 2: Using Docker
+When finished type Ctrl+C and 
+```bash 
+conda deactivate
+```
 
-#### How to Build the Docker Image:
+### Option 2: Using Docker Locally
+
+1. Building the Docker Image locally:
 
 Make sure Docker is installed and running. From the root directory of the repository (where the Dockerfile is located), run:
 
-`docker build -t dsci-310-group-12 .`
+```bash
+docker build -t dsci-310-group-12 .
+```
 
-#### How to Run the Docker Image:
+2. How to Run the Docker Image :
 
-`docker run --rm -p 8888:8888 dsci-310-group-12`
+For windows:
+```bash
+docker run -it --rm -p 8888:8888 -v "/$(pwd)://home/jovyan" dsci310-image
+```
+For Mac or linux
+```bash
+docker run -it --rm -p 8888:8888 -v "$(pwd):/home/jovyan" dsci310-image
+```
 
 After the container starts, open a browser and navigate to:
 
-http://localhost:8888
+starting in https://127.0...
 
 Then open and run: `salary_analysis.ipynb`
+
+When finished, stop the container with Ctrl+C
+
+### Option 3: Using Docker Compose
+Make sure Docker is installed and running. From the root directory of the repository (where the Dockerfile is located), run:
+
+```bash
+docker compose up
+```
+After the container starts, open a browser and navigate to:
+
+starting in https://127.0...
+
+Then open and run: `salary_analysis.ipynb`
+
+When finished, stop the container with Ctrl+C, then:
+```bash
+docker compose down
+```
 
 ## Dependencies
 
 The main dependencies required to run this project are listed in `environment.yml` and include:
 
-  - python=3.12
-  - jupyterlab
-  - numpy
-  - pandas
-  - matplotlib
-  - seaborn
-  - scikit-learn
-  - statsmodels
-  - r-base            
-  - r-irkernel
-  - r-caret
-  - r-dplyr
-  - r-patchwork
-  - r-tidyr
-  - r-proc
-  - r-ggplot2
+  - python=3.12.13
+  - jupyterlab=4.5.6
+  - numpy=2.4.2
+  - pandas=3.0.1
+  - matplotlib=3.10.8
+  - seaborn=0.13.2
+  - scikit-learn=1.8.0
+  - statsmodels=0.14.6
+  - r-base=4.3.3            
+  - r-irkernel=1.3.2
+  - r-caret=6.0_94
+  - r-dplyr=1.1.4
+  - r-patchwork=1.3.2
+  - r-tidyr=1.3.1
+  - r-proc=1.19.0.1
+  - r-ggplot2=3.5.2
   - pip
   - pip:
-      - openpyxl
+      - openpyxl==3.1.5
 
 Additional environment details are locked in `conda-lock.yml` to ensure reproducibility across platforms.
 
