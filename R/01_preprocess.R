@@ -1,0 +1,76 @@
+"Download, clean, and preprocess the Adult Census dataset.
+
+Usage:
+  01_preprocess.R <raw_data_path> <names_path> <processed_output_path>
+
+Options:
+  <raw_data_path>           Path to save raw adult.data file
+  <names_path>              Path to save adult.names file
+  <processed_output_path>   Path to save cleaned dataset
+" -> doc
+
+library(tidyverse)
+library(docopt)
+
+opt <- docopt(doc)
+
+main <- function(raw_data_path, names_path, processed_output_path) {
+
+  # ---- Create directories if needed ----
+  dir.create(dirname(raw_data_path), recursive = TRUE, showWarnings = FALSE)
+  dir.create(dirname(names_path), recursive = TRUE, showWarnings = FALSE)
+  dir.create(dirname(processed_output_path), recursive = TRUE, showWarnings = FALSE)
+
+  # ---- Download data ----
+  url_data <- "https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data"
+  url_names <- "https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.names"
+
+  download.file(url_data, raw_data_path, mode = "wb")
+  download.file(url_names, names_path, mode = "wb")
+
+  # ---- Read data ----
+  adult_raw <- read_csv(
+    raw_data_path,
+    col_names = FALSE,
+    na = "?"
+  )
+
+  colnames(adult_raw) <- c(
+    "age", "workclass", "fnlwgt", "education", "education_num",
+    "marital_status", "occupation", "relationship", "race", "sex",
+    "capital_gain", "capital_loss", "hours_per_week", "native_country", "income"
+  )
+
+  # ---- Preprocess ----
+  adult_processed <- adult_raw |>
+    filter(
+      workclass != " Never-worked",
+      workclass != " ?",
+      occupation != " ?",
+      native_country != " ?"
+    ) |>
+    mutate(
+      married = ifelse(
+        marital_status != " Widowed" &
+        marital_status != " Never-married",
+        1,0),
+      male = ifelse(sex == " Male", 1, 0),
+      race_white = ifelse(race == " White", 1, 0),
+      race_asian_pac_islander = ifelse(race == " Asian-Pac-Islander", 1, 0),
+      race_amer_indian_eskimo = ifelse(race == " Amer-Indian-Eskimo", 1, 0),
+      race_black = ifelse(race == " Black", 1, 0),
+      race_other = ifelse(race == " Other", 1, 0),
+      income = ifelse(income == " >50K", 1, 0)
+    ) |>
+    select(
+      -education, -fnlwgt, -marital_status,
+      -workclass, -occupation, -relationship,
+      -race, -sex
+    )
+
+  # ---- Save output ----
+  write_csv(adult_processed, processed_output_path)
+  
+  cat("Preprocessing complete.\n")}
+
+main(opt$raw_data_path, opt$names_path, opt$processed_output_path)
