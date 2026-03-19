@@ -42,32 +42,30 @@ main <- function(raw_data_path, names_path, processed_output_path) {
   )
 
   # ---- Preprocess ----
-  adult_processed <- adult_raw |>
-    filter(
-      workclass != " Never-worked",
-      workclass != " ?",
-      occupation != " ?",
-      native_country != " ?"
-    ) |>
-    mutate(
-      married = ifelse(
-        marital_status != " Widowed" &
-        marital_status != " Never-married",
-        1,0),
-      male = ifelse(sex == " Male", 1, 0),
-      race_white = ifelse(race == " White", 1, 0),
-      race_asian_pac_islander = ifelse(race == " Asian-Pac-Islander", 1, 0),
-      race_amer_indian_eskimo = ifelse(race == " Amer-Indian-Eskimo", 1, 0),
-      race_black = ifelse(race == " Black", 1, 0),
-      race_other = ifelse(race == " Other", 1, 0),
-      income = ifelse(income == " >50K", 1, 0)
-    ) |>
-    select(
-      -education, -fnlwgt, -marital_status,
-      -workclass, -occupation, -relationship,
-      -race, -sex
-    )
-
+adult_processed <- adult_raw |> filter(workclass != " Never-worked" & #filtering those that never worked as its all below 50k
+                                        workclass != " ?" &  #removing missing values
+                                        occupation != " ?" &
+                                        native_country != " ?") |>
+                                mutate(married = ifelse(marital_status != " Widowed" & 
+                                                        marital_status != " Never-married", 
+                                                        1, 0))|>
+                                mutate(male = ifelse(sex == " Male", 
+                                                        1, 0))|>
+                                mutate(race_white = ifelse(race == " White", 
+                                                        1, 0))|>
+                                mutate(race_asian_pac_islander = ifelse(race == " Asian-Pac-Islander", 
+                                                        1, 0))|>
+                                mutate(race_amer_indian_eskimo = ifelse(race == " Amer-Indian-Eskimo", 
+                                                        1, 0))|>
+                                mutate(race_black = ifelse(race == " Black", 
+                                                        1, 0))|>
+                                mutate(race_other = ifelse(race == " Other", 
+                                                        1, 0))|>
+                                mutate(income = ifelse(income == " >50K", 
+                                                        1, 0))|>
+                                select(-education, -fnlwgt, -marital_status, 
+                                        -workclass, -occupation, -relationship,
+                                        -race, -sex)
   # ---- Save output ----
   write_csv(adult_processed, processed_output_path)
   
