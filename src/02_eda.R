@@ -76,6 +76,64 @@ main <- function(input_file, results_dir) {
     height = 8
   )
 
+  # ---- Additional plots: Education & Marital Status ----
+
+  plot_df <- adult_processed |>
+    mutate(
+      income = factor(income, levels = c(0,1), labels = c("<=50K", ">50K")),
+      married = factor(married, levels = c(0,1), labels = c("No", "Yes"))
+    )
+
+  # ---- Plot 1: Education vs Income ----
+  p1 <- ggplot(plot_df, aes(x = factor(education_num), fill = income)) +
+    geom_bar() +
+    labs(
+      title = "Income by Education Level",
+      x = "Education Number",
+      y = "Count",
+      fill = "Income"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      axis.text.y = element_text(size = 14),
+      axis.title = element_text(size = 14),
+      plot.title = element_text(size = 18, face = "bold")
+    )
+
+  # ---- Plot 2: Marital Status vs Income ----
+  p2 <- ggplot(plot_df, aes(x = married, fill = income)) +
+    geom_bar() +
+    labs(
+      title = "Income by Marital Status",
+      x = "Married",
+      y = "Count",
+      fill = "Income"
+    ) +
+    theme_minimal() +
+    theme(
+      axis.text.x = element_text(size = 12),
+      axis.text.y = element_text(size = 12),
+      axis.title = element_text(size = 14),
+      plot.title = element_text(size = 16, face = "bold")
+    )
+
+# ---- Save Plot 1 ----
+ggsave(
+  filename = file.path(figures_dir, "income_by_education.png"),
+  plot = p1,
+  width = 8,
+  height = 5
+)
+
+# ---- Save Plot 2 ----
+ggsave(
+  filename = file.path(figures_dir, "income_by_marriage.png"),
+  plot = p2,
+  width = 8,
+  height = 5
+)
+
 #displays text in terminal to indicate that the script ran successfully 
   cat("EDA complete.\n")
   cat("Saved table to:", file.path(tables_dir, "class_counts.csv"), "\n")
