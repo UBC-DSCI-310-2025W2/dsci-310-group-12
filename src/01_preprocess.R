@@ -29,10 +29,10 @@ main <- function(raw_data_path, names_path, processed_output_path) {
   download.file(url_names, names_path, mode = "wb")
 
   # ---- Read data ----
-  adult_raw <- read_csv(
+  adult_raw <- read.csv(
     raw_data_path,
-    col_names = FALSE,
-    na = "?"
+    header = FALSE,
+    na.strings = "?"
   )
 
   colnames(adult_raw) <- c(
@@ -67,7 +67,7 @@ adult_processed <- adult_raw |> filter(workclass != " Never-worked" & #filtering
                                         -workclass, -occupation, -relationship,
                                         -race, -sex)
   # ---- Save output ----
-  write_csv(adult_processed, processed_output_path)
+  write.csv(adult_processed, processed_output_path, row.names = FALSE)
   
   cat("Preprocessing complete.\n")}
 
