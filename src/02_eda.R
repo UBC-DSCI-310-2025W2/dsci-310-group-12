@@ -63,10 +63,10 @@ main <- function(input_file, results_dir) {
       fill = "Corr"
     ) +
     theme(
-      axis.text.x = element_text(size = 12, angle = 45, hjust = 1),
-      axis.text.y = element_text(size = 12),
+      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
+      axis.text.y = element_text(size = 14),
       axis.title = element_text(size = 14),
-      plot.title = element_text(size = 16, face = "bold")
+      plot.title = element_text(size = 18, face = "bold")
     )
 
   ggsave(
