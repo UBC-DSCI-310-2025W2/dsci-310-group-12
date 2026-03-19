@@ -1,0 +1,220 @@
+---
+title: "Predicting Income >$50K Using 1994 UCI Adult Census"
+author: "Andy Xin, Aryan Shah, Lucas Ortiz Molina, Taehyun Kim"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+bibliography: references.bib
+---
+```{r}
+#| label: setup
+#| include: false
+
+# Load required libraries for reading results
+library(dplyr)
+library(knitr)
+
+# Read in pre-generated results
+class_counts     <- read.csv("results/tables/class_counts.csv")
+training_metrics <- read.csv("results/tables/training_metrics.csv")
+
+# Extract key inline values
+accuracy <- round(
+  training_metrics$value[training_metrics$metric == "accuracy"],
+  4
+)
+auc_val <- 0.811  # from model evaluation; not saved to CSV
+
+n_total       <- sum(class_counts$n)
+n_low_income  <- class_counts$n[class_counts$income == 0]
+n_high_income <- class_counts$n[class_counts$income == 1]
+prop_low      <- round(class_counts$prop[class_counts$income == 0] * 100, 1)
+prop_high     <- round(class_counts$prop[class_counts$income == 1] * 100, 1)
+```
+
+## Summary
+
+We applied a logistic regression model on the 1994 UCI Adult Census dataset to predict
+whether an individual earns ≤\$50K or >\$50K a year. The model achieved an accuracy of
+`r accuracy * 100`%. One of the patterns we found from our exploratory data analysis was
+that education and income appear to be positively correlated — as the education level of an
+individual increases, their income tends to increase. Another important correlation was
+between marital status and income, where married individuals were more likely to earn
+>\$50K compared to non-married individuals. The findings from this analysis can be used to
+influence education and other social policies. Due to the strong performance of this model
+it can also serve as a template for similar work in economic research.
+
+## Introduction
+
+Income is influenced by a mix of personal and labour-market factors such as education,
+occupation, and hours worked. Predicting whether someone earns above a given threshold is
+a common classification problem in data science and also raises practical questions about
+how demographic and job characteristics relate to earnings outcomes.
+
+This project uses the UCI Adult (Census Income) dataset [@becker1996adult] to build and
+evaluate a model that predicts whether an individual's annual income exceeds \$50K using
+demographic and work-related features (e.g., age, education, occupation, hours worked per
+week). The dataset contains *48,842* observations and *14* input features (6 quantitative
+and 8 categorical), with the target variable indicating whether income exceeds \$50K. UCI
+also notes that records were selected using the following conditions:
+
+- Age > 16
+- Adjusted gross income (AGI) > 100
+- Final weight (AFNLWGT) > 1
+- Hours worked per week (HRSWK) > 0
+
+## Methods & Results
+
+### Data Wrangling Summary
+
+Since the original data does not include column names, descriptive variable names were
+manually assigned based on the dataset documentation. The data was then cleaned by removing
+observations containing missing or undefined values (represented by `"?"`) in key
+categorical variables such as workclass, occupation, and native country, as well as
+filtering out individuals who had never worked. Several categorical variables were
+transformed into binary indicator variables to make the dataset more suitable for
+quantitative analysis and modelling, including indicators for marital status, sex, and race
+categories. The target variable, income, was converted into a binary numeric outcome where
+1 represents individuals earning more than \$50K annually and 0 otherwise. Finally,
+redundant or highly categorical variables that were no longer needed after encoding were
+removed, resulting in a cleaned, analysis-ready data frame composed primarily of numeric
+predictors and selected categorical information.
+
+### Analysis Summary
+
+We conducted exploratory data analysis including a visualization of the class distribution
+between >\$50K and ≤\$50K income groups (@tbl-class-counts), as well as a correlation
+matrix (@fig-heatmap) to help inform variable selection. Once we isolated our variables of
+interest, we fit a simple logistic regression to conduct our classification experiment.
+
+@tbl-class-counts shows the class distribution in the processed dataset. The dataset is
+notably imbalanced: `r prop_low`% of individuals earn ≤\$50K (`r n_low_income` records)
+compared to only `r prop_high`% earning >\$50K (`r n_high_income` records).
+```{r}
+#| label: tbl-class-counts
+#| tbl-cap: "Class distribution of income in the processed Adult Census dataset."
+#| echo: false
+
+class_counts |>
+  mutate(
+    income = ifelse(income == 0, "<=50K", ">50K"),
+    prop   = round(prop * 100, 2)
+  ) |>
+  rename(
+    `Income Group` = income,
+    `Count`        = n,
+    `Proportion (%)` = prop
+  ) |>
+  knitr::kable()
+```
+
+@fig-heatmap shows the correlation among all numeric variables in the processed dataset.
+The `education_num` and `married` variables hold the strongest associations with the
+response variable `income`, which informed our variable selection for the classification
+task. We also noted that these two predictors are not highly correlated with each other,
+which is a positive sign for the model.
+```{r}
+#| label: fig-heatmap
+#| fig-cap: "Correlation heatmap of the Adult processed dataset."
+#| echo: false
+#| out-width: "90%"
+
+knitr::include_graphics("results/figures/correlation_heatmap.png")
+```
+
+@fig-eda shows the distribution of income by education level. Income clearly increases
+with education level, and as shown in @fig-marriage, married individuals are substantially
+more likely to earn above \$50K.
+```{r}
+#| label: fig-eda
+#| fig-cap: "Distribution of income by education level in the Adult dataset."
+#| echo: false
+#| out-width: "90%"
+
+knitr::include_graphics("results/figures/income_by_education.png")
+```
+```{r}
+#| label: fig-marriage
+#| fig-cap: "Distribution of income by marital status in the Adult dataset."
+#| echo: false
+#| out-width: "60%"
+
+knitr::include_graphics("results/figures/income_by_marriage.png")
+```
+
+We fit a logistic regression model using `education_num` and `married` as predictors of
+`income`. The model achieved an overall accuracy of `r accuracy * 100`%.
+
+@fig-confusion shows the confusion matrix for the logistic regression model. The model
+correctly classified the majority of low-income individuals but misclassified a notable
+number of high-income earners as low-income (false negatives).
+```{r}
+#| label: fig-confusion
+#| fig-cap: "Confusion matrix for logistic regression on the Adult dataset."
+#| echo: false
+#| out-width: "80%"
+
+knitr::include_graphics("results/figures/confusion_matrix.png")
+```
+
+@fig-roc shows the ROC curve for the logistic regression model. The area under the curve
+(AUC) is `r auc_val`, indicating good discriminative ability.
+```{r}
+#| label: fig-roc
+#| fig-cap: "ROC curve for logistic regression on the Adult dataset."
+#| echo: false
+#| out-width: "70%"
+
+knitr::include_graphics("results/figures/roc_curve.png")
+```
+
+## Discussion
+
+We applied a logistic regression model to predict whether an individual earns ≤\$50K or
+>\$50K a year. The model achieved an accuracy of `r accuracy * 100`%, which indicates
+strong performance. Additionally, the area under the ROC curve (AUC) is `r auc_val`,
+suggesting that the model has good discriminative ability in distinguishing between
+individuals earning ≤\$50K and >\$50K (see @fig-roc).
+
+From the exploratory visualizations (see @fig-eda and @fig-marriage), we see that:
+
+- Income increases with education level: individuals with higher education numbers show a
+  noticeably larger proportion of >\$50K earners.
+- Marital status appears strongly associated with income, with married individuals much
+  more likely to earn above \$50,000 compared to unmarried individuals.
+
+As shown in @fig-confusion, the model is much better at correctly classifying individuals
+with lower incomes (≤\$50K) than individuals with higher incomes (>\$50K). This shows that
+the model is more comfortable labelling lower-income groups compared to higher-income ones.
+
+The increase in income with higher education level corresponds well with human capital
+theory, which also suggests that educational level is positively correlated with income
+[@strober1990]. Therefore, it is not surprising that individuals with higher education
+numbers are more likely to earn above \$50,000.
+
+A previous study has shown that there can be a hypothetical positive effect of marriage on
+income [@cutright1970]. This is somewhat consistent with our finding, which shows a
+positive association between marriage and income.
+
+The model's stronger performance in predicting ≤\$50K earners was somewhat expected due
+to class imbalance in the salary dataset (see @tbl-class-counts), where the lower-income
+group has a much larger population.
+
+Potential implications of our model:
+
+- **Education and Policy**: The strong link between education and income highlights the
+  importance of educational access. Investments in education can contribute to long-term
+  income growth [@rosenblum2025].
+- **Predictive Modeling Applications**: With an AUC of `r auc_val`, the model demonstrates
+  practical predictive value. Similar models could be used in other economic research.
+
+Future questions that arise from our model:
+
+- Would more complex models (e.g., random forests or gradient boosting) improve detection
+  of high-income earners?
+- How can class imbalance be addressed?
+- Does the model perform equally well across gender, race, or age groups [@tan2026]?
+
+## References
