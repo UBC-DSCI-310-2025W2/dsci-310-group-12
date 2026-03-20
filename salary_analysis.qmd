@@ -6,6 +6,11 @@ format:
     toc: true
     toc-depth: 3
     number-sections: true
+    include-in-header:
+      text: |
+        <style>
+        #refs div { margin-bottom: 1em; }
+        </style>
 bibliography: references.bib
 ---
 ```{r}
