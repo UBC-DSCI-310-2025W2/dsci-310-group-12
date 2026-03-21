@@ -11,22 +11,60 @@ In this project, we applied a logistic regression model to the 1994 UCI Adult Ce
 
 These findings may help inform education and social policy discussions. Additionally, because the model performed well, this approach could be used as a starting point for similar analyses in economic research. The dataset can be found in https://archive-beta.ics.uci.edu/dataset/2/adult
 
-## How to run the analysis
+## Report
+
+The main analysis can be found in salary_analysis.qmd. The Quarto file can be rendered into html using instructinons below. In addition, the analysis can also be viewed as a jupyter notebook in salary_analysis.ipynb.
+
+## Cloning the Repository 
+
+To start the analysis clone the repository to your local machine. First, navigate to where you want to store the folder by inputting 
+
+```bash
+cd <name>
+```
+into the termnial, unless stated otherwise, all inputs are done inside the terminal.
+
+Inside the desired folder, clone the repostory:
+
+SSH key:
+```bash
+git clone git@github.com:UBC-DSCI-310-2025W2/dsci-310-group-12.git
+```
+HTTPS:
+```bash
+git clone https://github.com/UBC-DSCI-310-2025W2/dsci-310-group-12.git
+```
+
+Then navigate into the project directory:
+```bash
+cd dsci-310-group-12
+```
+
+
+
+
+## How to set up the environment
 
 ### Option 1: Using Conda 
 
 Using conda-lock file for complete reproducibility. Requires Conda and Conda-lock
 
-You can install the Environment using conda-lock file, activate and run jupyter notebooks using:
+
 
 ```bash
 conda-lock install --name dsci310 conda-lock.yml
+```
+Activate the environment:
+```bash
 conda activate dsci310
+```
+Optionally open jupyter labs using:
+```bash
 jupyter lab
 ```
- Jupyter notebooks should be open, if not open the URL printed in the terminal starting in https://127.0...
+ Jupyter notebooks should automatically open, if not, open the URL printed in the terminal starting in https://127.0...
 
-When finished type Ctrl+C and 
+When finished type Ctrl+C in termal and input
 ```bash 
 conda deactivate
 ```
@@ -41,7 +79,7 @@ Make sure Docker is installed and running. From the root directory of the reposi
 docker build -t dsci-310-group-12 .
 ```
 
-2. How to Run the Docker Image :
+2. Run the Docker Image :
 
 For windows:
 ```bash
@@ -52,11 +90,7 @@ For Mac or linux
 docker run -it --rm -p 8888:8888 -v "$(pwd):/home/jovyan" dsci-310-group-12
 ```
 
-After the container starts, open a browser and navigate to:
-
-starting in https://127.0...
-
-Then open and run: `salary_analysis.ipynb`
+After the container starts, from the terminal open the link starting in https://127.0... 
 
 When finished, stop the container with Ctrl+C
 
@@ -66,15 +100,45 @@ Make sure Docker is installed and running. From the root directory of the reposi
 ```bash
 docker compose up
 ```
-After the container starts, open a browser and navigate to:
+After the container starts, from the terminal open the link starting in https://127.0... 
 
-starting in https://127.0...
-
-Then open and run: `salary_analysis.ipynb`
-
-When finished, stop the container with Ctrl+C, then:
+When finished, stop the container with Ctrl+C
 ```bash
 docker compose down
+```
+
+
+## How to run the analysis:
+After the environment is set up, navigate to terminal. If inside jupyter notebooks press
+
+`File -> New -> Terminal`
+
+inside the terminal you can 
+
+Generate repots:
+```bash
+make all
+```
+Remove all reports:
+```bash
+make clean
+```
+
+Additionally, you can manually run scripts and generate the quarto file using:
+```bash
+Rscript src/01_preprocess.R data/raw/adult_raw.csv data/raw/adult_names_raw.csv data/processed/adult_processed.csv
+```
+```bash 
+Rscript src/02_eda.R data/processed/adult_processed.csv results
+```
+```bash
+Rscript src/03_model_train.R data/processed/adult_processed.csv
+```
+```bash
+Rscript src/04_evaluate_model.R data/processed/adult_processed.csv
+```
+```bash
+quarto render salary_analysis.qmd
 ```
 
 ## Dependencies
