@@ -17,20 +17,17 @@ bibliography: references.bib
 #| label: setup
 #| include: false
 
-# Load required libraries for reading results
 library(dplyr)
 library(knitr)
 
-# Read in pre-generated results
 class_counts     <- read.csv("results/tables/class_counts.csv")
 training_metrics <- read.csv("results/tables/training_metrics.csv")
 
-# Extract key inline values
 accuracy <- round(
   training_metrics$value[training_metrics$metric == "accuracy"],
   4
 )
-auc_val <- 0.811  # from model evaluation; not saved to CSV
+auc_val <- 0.811
 
 n_total       <- sum(class_counts$n)
 n_low_income  <- class_counts$n[class_counts$income == 0]
@@ -129,12 +126,16 @@ which is a positive sign for the model.
 knitr::include_graphics("results/figures/correlation_heatmap.png")
 ```
 
-@fig-eda shows the distribution of income by education level. Income clearly increases
-with education level, and as shown in @fig-marriage, married individuals are substantially
-more likely to earn above \$50K.
+@fig-eda shows the distribution of income across education levels and marital status.
+Higher education levels correspond to a greater proportion of individuals in the >\$50K
+category, suggesting that education level provides useful predictive signal. Similarly,
+married individuals have a higher proportion of >\$50K earners compared to those who are
+not married. It is important to note that these observations are descriptive and do not
+imply causal relationships — they highlight patterns that the predictive model can leverage
+when classifying individuals into income groups.
 ```{r}
 #| label: fig-eda
-#| fig-cap: "Distribution of income by education level in the Adult dataset."
+#| fig-cap: "Distribution of income by education level (left) and marital status (right) in the Adult dataset."
 #| echo: false
 #| out-width: "90%"
 
@@ -152,9 +153,12 @@ knitr::include_graphics("results/figures/income_by_marriage.png")
 We fit a logistic regression model using `education_num` and `married` as predictors of
 `income`. The model achieved an overall accuracy of `r accuracy * 100`%.
 
-@fig-confusion shows the confusion matrix for the logistic regression model. The model
-correctly classified the majority of low-income individuals but misclassified a notable
-number of high-income earners as low-income (false negatives).
+@fig-confusion presents the confusion matrix for the logistic regression model. The model
+correctly classified 20,801 individuals in the ≤\$50K category and 3,367 in the >\$50K
+category. However, it misclassified 4,141 high-income individuals as low-income (false
+negatives) and 1,853 low-income individuals as high-income (false positives). These
+results indicate that the model performs better at predicting the ≤\$50K class, with lower
+sensitivity in identifying high-income earners.
 ```{r}
 #| label: fig-confusion
 #| fig-cap: "Confusion matrix for logistic regression on the Adult dataset."
@@ -164,8 +168,10 @@ number of high-income earners as low-income (false negatives).
 knitr::include_graphics("results/figures/confusion_matrix.png")
 ```
 
-@fig-roc shows the ROC curve for the logistic regression model. The area under the curve
-(AUC) is `r auc_val`, indicating good discriminative ability.
+@fig-roc shows the ROC curve for the logistic regression model. An AUC of `r auc_val`
+indicates that the model is able to correctly rank higher-income individuals above
+lower-income individuals in most cases, demonstrating good discriminative performance
+across different classification thresholds.
 ```{r}
 #| label: fig-roc
 #| fig-cap: "ROC curve for logistic regression on the Adult dataset."
@@ -178,48 +184,39 @@ knitr::include_graphics("results/figures/roc_curve.png")
 ## Discussion
 
 We applied a logistic regression model to predict whether an individual earns ≤\$50K or
->\$50K a year. The model achieved an accuracy of `r accuracy * 100`%, which indicates
-strong performance. Additionally, the area under the ROC curve (AUC) is `r auc_val`,
-suggesting that the model has good discriminative ability in distinguishing between
-individuals earning ≤\$50K and >\$50K (see @fig-roc).
+>\$50K annually. The model achieved an accuracy of `r accuracy * 100`%, indicating strong
+predictive performance. Additionally, the AUC is `r auc_val` (see @fig-roc), suggesting
+that the model is effective at distinguishing between lower- and higher-income individuals.
 
-From the exploratory visualizations (see @fig-eda and @fig-marriage), we see that:
+From the exploratory visualizations (see @fig-eda and @fig-marriage), certain variables
+appear to contribute meaningfully to the model's predictive performance:
 
-- Income increases with education level: individuals with higher education numbers show a
-  noticeably larger proportion of >\$50K earners.
-- Marital status appears strongly associated with income, with married individuals much
-  more likely to earn above \$50,000 compared to unmarried individuals.
+- **Education level**: Higher education levels are associated with a greater proportion of
+  individuals predicted as earning >\$50K, suggesting that this variable is useful in
+  distinguishing between income groups [@strober1990].
+- **Marital status**: Married individuals are more frequently predicted as earning >\$50K,
+  indicating that this feature provides predictive signal for the model [@cutright1970].
 
-As shown in @fig-confusion, the model is much better at correctly classifying individuals
-with lower incomes (≤\$50K) than individuals with higher incomes (>\$50K). This shows that
-the model is more comfortable labelling lower-income groups compared to higher-income ones.
+As shown in @fig-confusion, while overall performance is strong, the model performs better
+at predicting individuals in the ≤\$50K class than those in the >\$50K class. This
+imbalance is likely influenced by the class distribution in the dataset (see
+@tbl-class-counts), where lower-income individuals are more prevalent, causing the model
+to be better calibrated toward the majority class.
 
-The increase in income with higher education level corresponds well with human capital
-theory, which also suggests that educational level is positively correlated with income
-[@strober1990]. Therefore, it is not surprising that individuals with higher education
-numbers are more likely to earn above \$50,000.
+**Potential implications:**
 
-A previous study has shown that there can be a hypothetical positive effect of marriage on
-income [@cutright1970]. This is somewhat consistent with our finding, which shows a
-positive association between marriage and income.
+- **Predictive utility**: With an AUC of `r auc_val`, the model demonstrates reasonable
+  effectiveness for predicting income categories and could serve as a baseline for similar
+  classification tasks [@rosenblum2025].
+- **Feature relevance**: Variables such as education level and marital status appear to
+  provide useful predictive information and may be important inputs for future models.
 
-The model's stronger performance in predicting ≤\$50K earners was somewhat expected due
-to class imbalance in the salary dataset (see @tbl-class-counts), where the lower-income
-group has a much larger population.
+**Future directions:**
 
-Potential implications of our model:
-
-- **Education and Policy**: The strong link between education and income highlights the
-  importance of educational access. Investments in education can contribute to long-term
-  income growth [@rosenblum2025].
-- **Predictive Modeling Applications**: With an AUC of `r auc_val`, the model demonstrates
-  practical predictive value. Similar models could be used in other economic research.
-
-Future questions that arise from our model:
-
-- Would more complex models (e.g., random forests or gradient boosting) improve detection
-  of high-income earners?
-- How can class imbalance be addressed?
-- Does the model perform equally well across gender, race, or age groups [@tan2026]?
+- Would more complex models (e.g., random forests or gradient boosting) improve prediction,
+  particularly for high-income individuals?
+- How can class imbalance be addressed to improve sensitivity for the >\$50K class?
+- Does predictive performance vary across demographic subgroups such as gender, race, or
+  age [@tan2026]?
 
 ## References
