@@ -185,7 +185,7 @@ Figure&nbsp;1: Correlation heatmap of the Adult processed dataset.
 </div>
 </div>
 </div>
-<p><a href="#fig-eda" class="quarto-xref">Figure&nbsp;2</a> shows the distribution of income by education level. Income clearly increases with education level, and as shown in <a href="#fig-marriage" class="quarto-xref">Figure&nbsp;3</a>, married individuals are substantially more likely to earn above $50K.</p>
+<p><a href="#fig-eda" class="quarto-xref">Figure&nbsp;2</a> shows the distribution of income across education levels and marital status. Higher education levels correspond to a greater proportion of individuals in the &gt;$50K category, suggesting that education level provides useful predictive signal. Similarly, married individuals have a higher proportion of &gt;$50K earners compared to those who are not married. It is important to note that these observations are descriptive and do not imply causal relationships — they highlight patterns that the predictive model can leverage when classifying individuals into income groups.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-eda" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -194,7 +194,7 @@ Figure&nbsp;1: Correlation heatmap of the Adult processed dataset.
 <img src="results/figures/income_by_education.png" class="img-fluid figure-img" style="width:90.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Distribution of income by education level in the Adult dataset.
+Figure&nbsp;2: Distribution of income by education level (left) and marital status (right) in the Adult dataset.
 </figcaption>
 </figure>
 </div>
@@ -215,7 +215,7 @@ Figure&nbsp;3: Distribution of income by marital status in the Adult dataset.
 </div>
 </div>
 <p>We fit a logistic regression model using <code>education_num</code> and <code>married</code> as predictors of <code>income</code>. The model achieved an overall accuracy of 80.13%.</p>
-<p><a href="#fig-confusion" class="quarto-xref">Figure&nbsp;4</a> shows the confusion matrix for the logistic regression model. The model correctly classified the majority of low-income individuals but misclassified a notable number of high-income earners as low-income (false negatives).</p>
+<p><a href="#fig-confusion" class="quarto-xref">Figure&nbsp;4</a> presents the confusion matrix for the logistic regression model. The model correctly classified 20,801 individuals in the ≤$50K category and 3,367 in the &gt;$50K category. However, it misclassified 4,141 high-income individuals as low-income (false negatives) and 1,853 low-income individuals as high-income (false positives). These results indicate that the model performs better at predicting the ≤$50K class, with lower sensitivity in identifying high-income earners.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-confusion" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -230,7 +230,7 @@ Figure&nbsp;4: Confusion matrix for logistic regression on the Adult dataset.
 </div>
 </div>
 </div>
-<p><a href="#fig-roc" class="quarto-xref">Figure&nbsp;5</a> shows the ROC curve for the logistic regression model. The area under the curve (AUC) is 0.811, indicating good discriminative ability.</p>
+<p><a href="#fig-roc" class="quarto-xref">Figure&nbsp;5</a> shows the ROC curve for the logistic regression model. An AUC of 0.811 indicates that the model is able to correctly rank higher-income individuals above lower-income individuals in most cases, demonstrating good discriminative performance across different classification thresholds.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-roc" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -249,26 +249,23 @@ Figure&nbsp;5: ROC curve for logistic regression on the Adult dataset.
 </section>
 <section id="discussion" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="discussion"><span class="header-section-number">4</span> Discussion</h2>
-<p>We applied a logistic regression model to predict whether an individual earns ≤$50K or &gt;$50K a year. The model achieved an accuracy of 80.13%, which indicates strong performance. Additionally, the area under the ROC curve (AUC) is 0.811, suggesting that the model has good discriminative ability in distinguishing between individuals earning ≤$50K and &gt;$50K (see <a href="#fig-roc" class="quarto-xref">Figure&nbsp;5</a>).</p>
-<p>From the exploratory visualizations (see <a href="#fig-eda" class="quarto-xref">Figure&nbsp;2</a> and <a href="#fig-marriage" class="quarto-xref">Figure&nbsp;3</a>), we see that:</p>
+<p>We applied a logistic regression model to predict whether an individual earns ≤$50K or &gt;$50K annually. The model achieved an accuracy of 80.13%, indicating strong predictive performance. Additionally, the AUC is 0.811 (see <a href="#fig-roc" class="quarto-xref">Figure&nbsp;5</a>), suggesting that the model is effective at distinguishing between lower- and higher-income individuals.</p>
+<p>From the exploratory visualizations (see <a href="#fig-eda" class="quarto-xref">Figure&nbsp;2</a> and <a href="#fig-marriage" class="quarto-xref">Figure&nbsp;3</a>), certain variables appear to contribute meaningfully to the model’s predictive performance:</p>
 <ul>
-<li>Income increases with education level: individuals with higher education numbers show a noticeably larger proportion of &gt;$50K earners.</li>
-<li>Marital status appears strongly associated with income, with married individuals much more likely to earn above $50,000 compared to unmarried individuals.</li>
+<li><strong>Education level</strong>: Higher education levels are associated with a greater proportion of individuals predicted as earning &gt;$50K, suggesting that this variable is useful in distinguishing between income groups <span class="citation" data-cites="strober1990">(<a href="#ref-strober1990" role="doc-biblioref">Strober 1990</a>)</span>.</li>
+<li><strong>Marital status</strong>: Married individuals are more frequently predicted as earning &gt;$50K, indicating that this feature provides predictive signal for the model <span class="citation" data-cites="cutright1970">(<a href="#ref-cutright1970" role="doc-biblioref">Cutright 1970</a>)</span>.</li>
 </ul>
-<p>As shown in <a href="#fig-confusion" class="quarto-xref">Figure&nbsp;4</a>, the model is much better at correctly classifying individuals with lower incomes (≤$50K) than individuals with higher incomes (&gt;$50K). This shows that the model is more comfortable labelling lower-income groups compared to higher-income ones.</p>
-<p>The increase in income with higher education level corresponds well with human capital theory, which also suggests that educational level is positively correlated with income <span class="citation" data-cites="strober1990">(<a href="#ref-strober1990" role="doc-biblioref">Strober 1990</a>)</span>. Therefore, it is not surprising that individuals with higher education numbers are more likely to earn above $50,000.</p>
-<p>A previous study has shown that there can be a hypothetical positive effect of marriage on income <span class="citation" data-cites="cutright1970">(<a href="#ref-cutright1970" role="doc-biblioref">Cutright 1970</a>)</span>. This is somewhat consistent with our finding, which shows a positive association between marriage and income.</p>
-<p>The model’s stronger performance in predicting ≤$50K earners was somewhat expected due to class imbalance in the salary dataset (see <a href="#tbl-class-counts" class="quarto-xref">Table&nbsp;1</a>), where the lower-income group has a much larger population.</p>
-<p>Potential implications of our model:</p>
+<p>As shown in <a href="#fig-confusion" class="quarto-xref">Figure&nbsp;4</a>, while overall performance is strong, the model performs better at predicting individuals in the ≤$50K class than those in the &gt;$50K class. This imbalance is likely influenced by the class distribution in the dataset (see <a href="#tbl-class-counts" class="quarto-xref">Table&nbsp;1</a>), where lower-income individuals are more prevalent, causing the model to be better calibrated toward the majority class.</p>
+<p><strong>Potential implications:</strong></p>
 <ul>
-<li><strong>Education and Policy</strong>: The strong link between education and income highlights the importance of educational access. Investments in education can contribute to long-term income growth <span class="citation" data-cites="rosenblum2025">(<a href="#ref-rosenblum2025" role="doc-biblioref">Rosenblum et al. 2025</a>)</span>.</li>
-<li><strong>Predictive Modeling Applications</strong>: With an AUC of 0.811, the model demonstrates practical predictive value. Similar models could be used in other economic research.</li>
+<li><strong>Predictive utility</strong>: With an AUC of 0.811, the model demonstrates reasonable effectiveness for predicting income categories and could serve as a baseline for similar classification tasks <span class="citation" data-cites="rosenblum2025">(<a href="#ref-rosenblum2025" role="doc-biblioref">Rosenblum et al. 2025</a>)</span>.</li>
+<li><strong>Feature relevance</strong>: Variables such as education level and marital status appear to provide useful predictive information and may be important inputs for future models.</li>
 </ul>
-<p>Future questions that arise from our model:</p>
+<p><strong>Future directions:</strong></p>
 <ul>
-<li>Would more complex models (e.g., random forests or gradient boosting) improve detection of high-income earners?</li>
-<li>How can class imbalance be addressed?</li>
-<li>Does the model perform equally well across gender, race, or age groups <span class="citation" data-cites="tan2026">(<a href="#ref-tan2026" role="doc-biblioref"><span class="nocase">Tan et al.</span> 2026</a>)</span>?</li>
+<li>Would more complex models (e.g., random forests or gradient boosting) improve prediction, particularly for high-income individuals?</li>
+<li>How can class imbalance be addressed to improve sensitivity for the &gt;$50K class?</li>
+<li>Does predictive performance vary across demographic subgroups such as gender, race, or age <span class="citation" data-cites="tan2026">(<a href="#ref-tan2026" role="doc-biblioref"><span class="nocase">Tan et al.</span> 2026</a>)</span>?</li>
 </ul>
 </section>
 <section id="references" class="level2 unnumbered" data-number="5">
