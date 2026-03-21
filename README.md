@@ -45,11 +45,11 @@ docker build -t dsci-310-group-12 .
 
 For windows:
 ```bash
-docker run -it --rm -p 8888:8888 -v "/$(pwd)://home/jovyan" dsci310-image
+docker run -it --rm -p 8888:8888 -v "/$(pwd)://home/jovyan" dsci-310-group-12
 ```
 For Mac or linux
 ```bash
-docker run -it --rm -p 8888:8888 -v "$(pwd):/home/jovyan" dsci310-image
+docker run -it --rm -p 8888:8888 -v "$(pwd):/home/jovyan" dsci-310-group-12
 ```
 
 After the container starts, open a browser and navigate to:
@@ -97,6 +97,13 @@ The main dependencies required to run this project are listed in `environment.ym
   - r-tidyr=1.3.1
   - r-proc=1.19.0.1
   - r-ggplot2=3.5.2
+  - r-docopt=0.7.2
+  - r-readr=2.1.5
+  - r-pROC=1.19.0.1
+  - r-knitr=1.50
+  - r-rmarkdown=2.29
+  - r-tidyverse=2.0.0
+  - quarto=1.8.27
   - pip
   - pip:
       - openpyxl==3.1.5

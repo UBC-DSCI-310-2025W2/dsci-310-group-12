@@ -8,7 +8,7 @@ Options:
   <names_path>              Path to save adult.names file
   <processed_output_path>   Path to save cleaned dataset
 " -> doc
-install.packages("docopt", repos = "https://cloud.r-project.org") #remove once docopt is added to conda-lock
+
 library(tidyverse)
 library(docopt)
 
