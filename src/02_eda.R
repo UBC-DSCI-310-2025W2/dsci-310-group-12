@@ -35,39 +35,8 @@ main <- function(input_file, results_dir) {
 
   write_csv(class_counts, file.path(tables_dir, "class_counts.csv"))
 
-  # ---- Correlation heatmap data ----
-  num_df <- adult_processed |>
-    select(where(is.numeric))
-
-  cor_mat <- cor(num_df, use = "complete.obs")
-
-  cor_long <- as.data.frame(cor_mat) |>
-    tibble::rownames_to_column("Var1") |>
-    pivot_longer(-Var1, names_to = "Var2", values_to = "Correlation")
-
-  # ---- Plot heatmap ----
-  heatmap_plot <- ggplot(cor_long, aes(x = Var1, y = Var2, fill = Correlation)) +
-    geom_tile(color = "white") +
-    scale_fill_gradient2(
-      low = "steelblue",
-      mid = "white",
-      high = "firebrick",
-      midpoint = 0,
-      limits = c(-1, 1)
-    ) +
-    theme_minimal() +
-    labs(
-      title = "Correlation Heatmap of Adult Processed Dataset",
-      x = "",
-      y = "",
-      fill = "Corr"
-    ) +
-    theme(
-      axis.text.x = element_text(size = 14, angle = 45, hjust = 1),
-      axis.text.y = element_text(size = 14),
-      axis.title = element_text(size = 14),
-      plot.title = element_text(size = 18, face = "bold")
-    )
+  source("src/05_correl_heatmap.R")
+  heatmap_plot <- plot_correlation_heatmap(adult_processed, title = "Correlation Heatmap of Adult Processed Dataset")
 
   ggsave(
     filename = file.path(figures_dir, "correlation_heatmap.png"),
