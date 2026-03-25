@@ -1,6 +1,6 @@
 library(testthat)
 library(ggplot2)
-source("../src/05_correl_heatmap.R")
+source("../../R/05_correl_heatmap.R")
 
 test_that("returns a ggplot object", {
   p <- plot_correlation_heatmap(mtcars)
@@ -19,4 +19,4 @@ test_that("errors on non-data-frame input", {
 test_that("errors when fewer than 2 numeric columns", {
   bad_df <- data.frame(a = c("x", "y", "z"))
   expect_error(plot_correlation_heatmap(bad_df))
-})  
+})

@@ -27,10 +27,11 @@ main <- function(input_file) {
   adult_processed <- read_csv(input_file, show_col_types = FALSE)
 
   # ---- Train model ----
-  model <- glm(
-    income ~ education_num + married,
-    data = adult_processed,
-    family = binomial()
+  source("R/06_train_logistic_model.R")
+  
+  model <- train_logistic_model(
+    adult_processed,
+    income ~ education_num + married
   )
 
   # ---- Predictions ----
