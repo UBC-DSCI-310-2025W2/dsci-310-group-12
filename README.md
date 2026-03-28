@@ -167,6 +167,7 @@ The main dependencies required to run this project are listed in `environment.ym
   - r-knitr=1.50
   - r-rmarkdown=2.29
   - r-tidyverse=2.0.0
+  - r-testthat=3.2.3
   - quarto=1.8.27
   - pip
   - pip:
