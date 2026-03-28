@@ -1,6 +1,6 @@
 #' Transforms a column into dummy variables 1 or 0
 #'
-#' Converts one column into dummy variables and renames the colum 
+#' Converts one column in a dataframe into dummy variables
 #'
 #' @param data_frame A data frame or data frame extension (e.g. a tibble).
 #' @param col_name The name of the column (a single string) to check to convert its values to binary
