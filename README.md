@@ -58,6 +58,10 @@ Activate the environment:
 ```bash
 conda activate dsci310
 ```
+Then download R Package from Git Hub:
+```bash
+Rscript -e 'pak::pak("UBC-DSCI-310-2025W2/wrangle-viz-tools-group-12")'
+```
 Optionally open jupyter labs using:
 ```bash
 jupyter lab
@@ -168,6 +172,9 @@ The main dependencies required to run this project are listed in `environment.ym
   - r-rmarkdown=2.29
   - r-tidyverse=2.0.0
   - r-testthat=3.2.3
+  - r-usethis-3.2.1
+  - r-devtools=2.4.5
+  - r-pak=0.9.0
   - quarto=1.8.27
   - pip
   - pip:

@@ -12,6 +12,8 @@ RUN conda install -c conda-forge conda-lock -y && \
     conda-lock install -n dsci310 conda-lock.yml && \
     conda clean -afy
 
+#downloading R pacakge
+RUN conda run -n dsci310 Rscript -e 'pak::pak("UBC-DSCI-310-2025W2/wrangle-viz-tools-group-12")'
 # Activate the environment
 ENV PATH=/opt/conda/envs/dsci310/bin:$PATH
 # RUN echo "conda activate dsci310" >> ~/.bashrc #use this if it dont work
