@@ -13,6 +13,7 @@ library(ggplot2)
 library(tidyr)
 library(readr)
 library(docopt)
+library(WrangleVizTools)
 
 opt <- docopt(doc)
 
@@ -35,7 +36,7 @@ main <- function(input_file, results_dir) {
 
   write_csv(class_counts, file.path(tables_dir, "class_counts.csv"))
 
-  source("R/05_correl_heatmap.R")
+
   heatmap_plot <- plot_correlation_heatmap(adult_processed, title = "Correlation Heatmap of Adult Processed Dataset")
 
   ggsave(

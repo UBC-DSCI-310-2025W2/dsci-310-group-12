@@ -12,6 +12,7 @@ library(readr)
 library(caret)
 library(ggplot2)
 library(pROC)
+library(WrangleVizTools)
 
 opt <- docopt(doc)
 
