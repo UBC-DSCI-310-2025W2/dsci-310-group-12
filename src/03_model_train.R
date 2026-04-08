@@ -10,6 +10,7 @@ Options:
 library(dplyr)
 library(readr)
 library(docopt)
+library(WrangleVizTools)
 
 opt <- docopt(doc)
 
@@ -27,7 +28,6 @@ main <- function(input_file) {
   adult_processed <- read_csv(input_file, show_col_types = FALSE)
 
   # ---- Train model ----
-  source("R/06_train_logistic_model.R")
   
   model <- train_logistic_model(
     adult_processed,
