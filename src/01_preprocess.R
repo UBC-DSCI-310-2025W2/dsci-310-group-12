@@ -11,6 +11,7 @@ Options:
 
 library(tidyverse)
 library(docopt)
+library(WrangleVizTools)
 
 opt <- docopt(doc)
 
@@ -46,23 +47,14 @@ adult_processed <- adult_raw |> filter(workclass != " Never-worked" & #filtering
                                         workclass != " ?" &  #removing missing values
                                         occupation != " ?" &
                                         native_country != " ?") |>
-                                mutate(married = ifelse(marital_status != " Widowed" & 
-                                                        marital_status != " Never-married", 
-                                                        1, 0))|>
-                                mutate(male = ifelse(sex == " Male", 
-                                                        1, 0))|>
-                                mutate(race_white = ifelse(race == " White", 
-                                                        1, 0))|>
-                                mutate(race_asian_pac_islander = ifelse(race == " Asian-Pac-Islander", 
-                                                        1, 0))|>
-                                mutate(race_amer_indian_eskimo = ifelse(race == " Amer-Indian-Eskimo", 
-                                                        1, 0))|>
-                                mutate(race_black = ifelse(race == " Black", 
-                                                        1, 0))|>
-                                mutate(race_other = ifelse(race == " Other", 
-                                                        1, 0))|>
-                                mutate(income = ifelse(income == " >50K", 
-                                                        1, 0))|>
+                                make_dummy_col("marital_status", "married", c(" Widowed", " Never-married"))|>
+                                make_dummy_col("sex", "male", c(" Male"))|>
+                                make_dummy_col("race", "race_white", c(" White"))|>
+                                make_dummy_col("race", "race_asian_pac_islander", c(" Asian-Pac-Islander"))|>
+                                make_dummy_col("race", "race_amer_indian_eskimo", c(" Amer-Indian-Eskimo"))|>
+                                make_dummy_col("race", "race_black", c(" Black"))|>
+                                make_dummy_col("race", "race_other", c(" Other"))|>
+                                make_dummy_col("income", "income", c(" >50K"))|>
                                 select(-education, -fnlwgt, -marital_status, 
                                         -workclass, -occupation, -relationship,
                                         -race, -sex)
