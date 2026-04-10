@@ -22,7 +22,8 @@ results/tables/training_metrics.csv: data/processed/adult_processed.csv
 
 # Model evaluation outputs
 results/figures/confusion_matrix.png \
-results/figures/roc_curve.png: data/processed/adult_processed.csv
+results/figures/roc_curve.png: data/processed/adult_processed.csv \
+	results/models/logistic_model.rds
 	Rscript src/04_evaluate_model.R data/processed/adult_processed.csv
 
 # Quarto report
