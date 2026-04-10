@@ -34,6 +34,22 @@ HTTPS:
 ```bash
 git clone https://github.com/UBC-DSCI-310-2025W2/dsci-310-group-12.git
 ```
+HTTPS:
+```bash
+git clone https://github.com/UBC-DSCI-310-2025W2/dsci-310-group-12.git
+```
+
+> **Note:** For guaranteed reproducibility, clone the latest release tag rather than `main`.
+> You can find the latest release [here](https://github.com/UBC-DSCI-310-2025W2/dsci-310-group-12/releases).
+> To clone a specific tag (e.g., `v2.0.0`):
+> ```bash
+> git clone --branch v2.0.0 https://github.com/UBC-DSCI-310-2025W2/dsci-310-group-12.git
+> ```
+
+Then navigate into the project directory:
+```bash
+cd dsci-310-group-12
+```
 
 Then navigate into the project directory:
 ```bash
