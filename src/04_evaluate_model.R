@@ -43,7 +43,7 @@ main <- function(input_file) {
   confusion_plot <- ggplot(conf_df, aes(x = Actual, y = Predicted, fill = Freq)) +
     geom_tile() +
     geom_text(aes(label = Freq), size = 6) +
-    scale_fill_gradient(low = "white", high = "steelblue") +
+    scale_fill_gradient(low = "#d6eaf8", high = "steelblue") +
     labs(
       title = "Confusion Matrix for Logistic Regression",
       x = "Actual Income (0 = <=50K, 1 = >50K)",
