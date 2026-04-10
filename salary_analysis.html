@@ -112,7 +112,7 @@ div.csl-indent {
 
 <section id="summary" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="summary"><span class="header-section-number">1</span> Summary</h2>
-<p>We applied a logistic regression model on the 1994 UCI Adult Census dataset to predict whether an individual earns ≤$50K or &gt;$50K a year. The model achieved an accuracy of 80.13%. One of the patterns we found from our exploratory data analysis was that education and income appear to be positively correlated — as the education level of an individual increases, their income tends to increase. Another important correlation was between marital status and income, where married individuals were more likely to earn &gt;$50K compared to non-married individuals. The findings from this analysis can be used to influence education and other social policies. Due to the strong performance of this model it can also serve as a template for similar work in economic research.</p>
+<p>We applied a logistic regression model on the 1994 UCI Adult Census dataset to predict whether an individual earns ≤$50K or &gt;$50K a year. The model achieved an accuracy of 80.13% and precision of 64.5%. One of the patterns we found from our exploratory data analysis was that education and income appear to be positively correlated — as the education level of an individual increases, their income tends to increase. Another important correlation was between marital status and income, where married individuals were more likely to earn &gt;$50K compared to non-married individuals. The findings from this analysis can be used to influence education and other social policies. Due to the strong performance of this model it can also serve as a template for similar work in economic research. These patterns are reflected directly in the model — <code>education_num</code> and <code>married</code> were selected as predictors based on their strong correlations with income observed in the EDA,and the model’s AUC of 0.811 confirms that these two features carry meaningful predictive signal.</p>
 </section>
 <section id="introduction" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="introduction"><span class="header-section-number">2</span> Introduction</h2>
@@ -213,7 +213,7 @@ Figure&nbsp;3: Distribution of income by marital status in the Adult dataset.
 </div>
 </div>
 </div>
-<p>We fit a logistic regression model using <code>education_num</code> and <code>married</code> as predictors of <code>income</code>. The model achieved an overall accuracy of 80.13%.</p>
+<p>We fit a logistic regression model using <code>education_num</code> and <code>married</code> as predictors of <code>income</code>. The model achieved an overall accuracy of 80.13% and precision of 64.5%.</p>
 <p><a href="#fig-confusion" class="quarto-xref">Figure&nbsp;4</a> presents the confusion matrix for the logistic regression model. The model correctly classified 20,801 individuals in the ≤$50K category and 3,367 in the &gt;$50K category. However, it misclassified 4,141 high-income individuals as low-income (false negatives) and 1,853 low-income individuals as high-income (false positives). These results indicate that the model performs better at predicting the ≤$50K class, with lower sensitivity in identifying high-income earners.</p>
 <div class="cell">
 <div class="cell-output-display">

@@ -1,2 +1,3 @@
 model,metric,value
 logistic_regression,accuracy,0.8012731251243286
+logistic_regression,precision,0.6450191570881226
