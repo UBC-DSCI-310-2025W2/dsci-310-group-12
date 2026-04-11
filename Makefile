@@ -26,6 +26,11 @@ results/figures/roc_curve.png: data/processed/adult_processed.csv \
 	results/models/logistic_model.rds
 	Rscript src/04_evaluate_model.R data/processed/adult_processed.csv
 
+# Data validation output
+results/reports/validation_report.html: data/processed/adult_processed.csv 
+	Rscript src/data_validation.R data/processed/adult_processed.csv 
+
+
 # Quarto report
 salary_analysis.html: \
 	results/figures/correlation_heatmap.png \
@@ -45,6 +50,7 @@ clean:
 	rm -rf results/figures/*
 	rm -rf results/tables/*
 	rm -rf results/models/*
-	rm -f salary_analysis.html
+	rm -f results/reports/salary_analysis.html
+	rm -f results/reports/validation_report.html
 
 .PHONY: all clean

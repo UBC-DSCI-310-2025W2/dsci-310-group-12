@@ -140,6 +140,9 @@ The makefile automatically runs all the commends below. You can manually run scr
 ```bash
 Rscript src/01_preprocess.R data/raw/adult_raw.csv data/raw/adult_names_raw.csv data/processed/adult_processed.csv
 ```
+```bash
+Rscript src/data_validation.R data/processed/adult_processed.csv 
+```
 ```bash 
 Rscript src/02_eda.R data/processed/adult_processed.csv results
 ```
@@ -161,6 +164,15 @@ The first scripts handles downloading and wrangling the dataset. It downloads da
 If it runs properly it will say:
 ```bash
 Preprocessing complete.
+```
+### [Data Validation](src/data_validation.R): Checking if processed data is correctly processed
+
+The intermediate step for checking if the dataset is correct after wrangling. If it runs properly it creates a file in `results/reports` called [validation_report.html](results/reports/validation_report.html). 
+
+If it runs properly, it will say:
+```bash
+Check results/reports/validation_report.html, to see if all tests passed 
+✔ The agent report has been written as `results/reports/validation_report.html`
 ```
 
 ### [Script 2](src/02_eda.R): Generates explanatory data analysis (EDA) artifacts for analysis.
