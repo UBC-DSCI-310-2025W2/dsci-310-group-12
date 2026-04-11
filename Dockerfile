@@ -21,5 +21,4 @@ ENV PATH=/opt/conda/envs/dsci310/bin:$PATH
 COPY . .
 
 # Launch Jupyter when container starts
-# CMD ["jupyter", "lab", "--ip=0.0.0.0", "--no-browser", "--allow-root"]
 CMD ["conda", "run", "--no-capture-output", "-n", "dsci310", "jupyter", "lab", "--ip=0.0.0.0", "--no-browser", "--allow-root"]

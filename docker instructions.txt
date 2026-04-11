@@ -1,0 +1,19 @@
+docker build -t dsci310-image .
+
+
+
+docker run -it --rm -p 8888:8888 -v "/$(pwd)://home/jovyan" dsci310-image
+
+
+
+CONDA:
+conda-lock install --name dsci310 conda-lock.yml
+conda activate dsci310
+jupyter lab
+
+testthat::test_dir("tests/testthat")
+
+testthat::test_file("tests/testthat/test-08_create_confusion_matrix_plot.R")
+testthat::test_file("tests/testthat/test-07_make_dummy_col.R")
+
+
