@@ -13,7 +13,7 @@ These findings may help inform education and social policy discussions. Addition
 
 ## Report
 
-The main analysis can be found in [salary_analysis.qmd](salary_analysis.qmd). The Quarto file can be rendered into html using instructinons below. In addition, the analysis can also be viewed as a jupyter notebook in salary_analysis.ipynb. The latest version of the analysis can be found in [salary_analysis.html](salary_analysis.html)
+The main analysis can be found in [salary_analysis.qmd](results/reports/salary_analysis.qmd) which is in `results/reports` directory. The Quarto file can be rendered into html using instructinons below. The latest version of the analysis can be found in [salary_analysis.html](results/reports/salary_analysis.html). In addition, an older version of the analysis can be viewed as a jupyter notebook in salary_analysis.ipynb.
 
 ## Cloning the Repository 
 
@@ -150,7 +150,7 @@ Rscript src/03_model_train.R data/processed/adult_processed.csv
 Rscript src/04_evaluate_model.R data/processed/adult_processed.csv
 ```
 ```bash
-quarto render salary_analysis.qmd
+quarto render results/reports/salary_analysis.qmd
 ```
 ## Explanation of Scripts at Each Step:
 
@@ -197,7 +197,7 @@ null device
 
 ### Make all and Quarto Render:
 
-After running `Make all` or after running each step seperately then Quarto render` it will generate [salary_analysis.html](salary_analysis.html)
+After running `Make all` or after running each step seperately then Quarto render` it will generate [salary_analysis.html](results/reports/salary_analysis.html)
 
 If it runs properly it will say:
 ```bash
