@@ -27,6 +27,10 @@ accuracy <- round(
   training_metrics$value[training_metrics$metric == "accuracy"],
   4
 )
+precision  <- round(
+  training_metrics$value[training_metrics$metric == "precision"],
+  4
+)
 auc_val <- 0.811
 
 n_total       <- sum(class_counts$n)
@@ -40,7 +44,7 @@ prop_high     <- round(class_counts$prop[class_counts$income == 1] * 100, 1)
 
 We applied a logistic regression model on the 1994 UCI Adult Census dataset to predict
 whether an individual earns ≤\$50K or >\$50K a year. The model achieved an accuracy of
-`r accuracy * 100`%. One of the patterns we found from our exploratory data analysis was
+`r accuracy * 100`% and precision of `r precision*100`%. One of the patterns we found from our exploratory data analysis was
 that education and income appear to be positively correlated — as the education level of an
 individual increases, their income tends to increase. Another important correlation was
 between marital status and income, where married individuals were more likely to earn
@@ -153,7 +157,7 @@ knitr::include_graphics("results/figures/income_by_marriage.png")
 ```
 
 We fit a logistic regression model using `education_num` and `married` as predictors of
-`income`. The model achieved an overall accuracy of `r accuracy * 100`%.
+`income`. The model achieved an overall accuracy of `r accuracy * 100`% and precision of `r precision*100`%.
 
 @fig-confusion presents the confusion matrix for the logistic regression model. The model
 correctly classified 20,801 individuals in the ≤\$50K category and 3,367 in the >\$50K
