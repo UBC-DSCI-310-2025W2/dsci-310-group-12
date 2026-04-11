@@ -1,4 +1,5 @@
 "Generate EDA artifacts for the processed Adult Census dataset.
+- this will generate correlation_heatmap.png, income_by_education.png, income_by_marriage.png and class_counts.csv 
 
 Usage:
   02_eda.R <input_file> <results_dir>

@@ -1,4 +1,5 @@
 "Download, clean, and preprocess the Adult Census dataset.
+First downloads the dataset, then will wrangle and download that version
 
 Usage:
   01_preprocess.R <raw_data_path> <names_path> <processed_output_path>

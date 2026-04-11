@@ -1,5 +1,5 @@
 "Train a logistic regression model on the processed dataset.
-
+- this will create a table called training metric that includes accuracy and percision data for the model
 Usage:
   03_train_model.R <input_file>
 
@@ -41,17 +41,24 @@ main <- function(input_file) {
   # ---- Accuracy ----
   accuracy <- mean(pred_class == adult_processed$income)
 
+  # ---- precision ----
+  tp <- sum(pred_class == 1 & adult_processed$income == 1)
+  tn <- sum(pred_class == 0 & adult_processed$income == 0)
+  fp <- sum(pred_class == 1 & adult_processed$income == 0)
+  fn <- sum(pred_class == 0 & adult_processed$income == 1)
+  precision <- tp / (tp + fp)
   # ---- Save metrics ----
-  metrics_tbl <- tibble(
-    model = "logistic_regression",
-    metric = "accuracy",
-    value = accuracy
-  )
+metrics_tbl <- tibble(
+  model = "logistic_regression",
+  metric = c("accuracy", "precision"),
+  value = c(accuracy, precision)
+)
 
   write_csv(metrics_tbl, metrics_path)
 
   cat("Model training complete.\n")
   cat("Accuracy:", round(accuracy, 4), "\n")
+  cat("Precision:", round(precision, 4), "\n")
 }
 
 main(opt$input_file)
