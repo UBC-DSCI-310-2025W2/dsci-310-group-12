@@ -36,7 +36,7 @@ salary_analysis.html: \
 	results/tables/class_counts.csv \
 	results/tables/training_metrics.csv \
 	results/models/logistic_model.rds
-	quarto render salary_analysis.qmd
+	quarto render results/reports/salary_analysis.qmd
 
 # Clean target
 clean:
